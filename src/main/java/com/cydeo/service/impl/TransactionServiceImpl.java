@@ -7,6 +7,7 @@ import com.cydeo.exception.BalanceNotSufficientException;
 import com.cydeo.model.Account;
 import com.cydeo.model.Transaction;
 import com.cydeo.repository.AccountRepository;
+import com.cydeo.repository.TransactionRepository;
 import com.cydeo.service.TransactionService;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,11 @@ import java.util.UUID;
 public class TransactionServiceImpl implements TransactionService {
 
     final private AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
 
-    public TransactionServiceImpl(AccountRepository accountRepository) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -35,7 +38,17 @@ public class TransactionServiceImpl implements TransactionService {
         // if both accounts are checking, if not, one of them saving, it needs to be same userID
 
         // make transfer
-        return null;
+        // after all validation are completed, and money is
+        Transaction transaction = Transaction.builder()
+                .amount(amount)
+                .sender(sender.getId())
+                .receiver(receiver.getId())
+                .creationDate(creationDate)
+                .message(message)
+                .build();
+        // save and return transaction
+        return transactionRepository.save(transaction);
+
     }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
@@ -59,7 +72,7 @@ public class TransactionServiceImpl implements TransactionService {
         // and user of sender or receiver is not the same, throw AccountOwnershipException
 
         if (((sender.getAccountType().equals(AccountType.SAVING) || (receiver.getAccountType().equals(AccountType.SAVING))
-                && (!sender.getUseId().equals(receiver.getUseId()))))) {
+                && !sender.getUseId().equals(receiver.getUseId())))) {
             throw new AccountOwnershipException("Sender Account needs to be different than receiver account");
 
         }
