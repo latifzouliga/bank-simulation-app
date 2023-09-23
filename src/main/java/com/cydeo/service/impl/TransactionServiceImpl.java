@@ -68,7 +68,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     private void checkAccountOwnership(Account sender, Account receiver) {
-        // write an if statment that checks if one of the accounts is saving
+        // write an if statement that checks if one of the accounts is saving
         // and user of sender or receiver is not the same, throw AccountOwnershipException
 
         if (((sender.getAccountType().equals(AccountType.SAVING) || (receiver.getAccountType().equals(AccountType.SAVING))
