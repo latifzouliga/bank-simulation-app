@@ -4,7 +4,6 @@ import com.cydeo.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
@@ -17,13 +16,10 @@ public class AccountController {
     }
 
     @GetMapping("/index")
-    public String showAccounts(Model model){
-        model.addAttribute("accounts",accountService.listAllAccount());
-        return "account/index";
+    public String showAccounts(Model model) {
+        model.addAttribute("accountList", accountService.listAllAccount());
+        return "/account/index";
     }
-
-
-
 
 
 }
