@@ -19,13 +19,16 @@ public class BankSimulationAppApplication {
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(BankSimulationAppApplication.class, args);
 
-        // get account and transaction and service beans
-//        AccountService accountService = context.getBean(AccountService.class);
-//        TransactionService transactionService = context.getBean(TransactionService.class);
-////
-//        //create 2 accounts: sender and receiver
-//        Account sender = accountService.createNewAccount(BigDecimal.valueOf(70), new Date(), AccountType.CHECKING, 1L);
-//        Account receiver = accountService.createNewAccount(BigDecimal.valueOf(50), new Date(), AccountType.CHECKING, 2L);
+//         get account and transaction and service beans
+        AccountService accountService = context.getBean(AccountService.class);
+        TransactionService transactionService = context.getBean(TransactionService.class);
+//
+        //create 2 accounts: sender and receiver
+        Account sender = accountService.createNewAccount(BigDecimal.valueOf(70), new Date(), AccountType.CHECKING, 1L);
+        Account receiver = accountService.createNewAccount(BigDecimal.valueOf(50), new Date(), AccountType.SAVING, 2L);
+        Account receiver2 = accountService.createNewAccount(BigDecimal.valueOf(5000), new Date(), AccountType.CHECKING, 3L);
+        Account receiver3 = accountService.createNewAccount(BigDecimal.valueOf(7400), new Date(), AccountType.SAVING, 4L);
+        Account receiver4 = accountService.createNewAccount(BigDecimal.valueOf(6200), new Date(), AccountType.CHECKING, 5L);
 //        Account receiver2 = null;
 ////
 //        System.out.println("============== accounts ==============");
