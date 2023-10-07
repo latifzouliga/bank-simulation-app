@@ -52,7 +52,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6 my-5">
+                                <div class="col-md-12 my-5">
                                     <input type="submit" class="btn btn-primary" value="Make transfer">
                                 </div>
                             </div>
@@ -71,8 +71,8 @@
                             </thead>
                             <tbody>
                                 <tr data-th-each="tran : ${lastTransactions}">
-                                    <td data-th-text="${tran.sender}"></td>
-                                    <td data-th-text="${tran.receiver}"></td>
+                                    <td data-th-text="${#strings.substring(tran.sender, #strings.length(tran.sender) - 12)}"></td>
+                                    <td data-th-text="${#strings.substring(tran.receiver, #strings.length(tran.receiver) - 12)}"></td>
                                     <td data-th-text="${tran.amount}"></td>
                                     <td data-th-text="${tran.creationDate}"></td>
                                     <td data-th-text="${tran.message}"></td>

@@ -34,15 +34,14 @@ public class TransactionController {
         return "/transaction/make-transfer";
     }
 
-    // write post method
-    // capture the transaction object
-    //
+
     @PostMapping("/make-transfer")
     public String getMakeTransfer(@ModelAttribute("transaction") Transaction transaction) {
 
         Account sender = accountService.findAccountById(transaction.getSender());
         Account receiver = accountService.findAccountById(transaction.getReceiver());
-        transactionService.makeTransfer(sender, receiver, transaction.getAmount(), new Date(), transaction.getMessage());
+
+        transactionService.makeTransfer(sender, receiver, transaction.getAmount(),new Date(),transaction.getMessage());
         System.out.println(transaction);
         return "redirect:/make-transfer";
     }
