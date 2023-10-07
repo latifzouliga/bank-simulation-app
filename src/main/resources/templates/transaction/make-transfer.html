@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <form data-th-object="${transaction}" action="#">
+                        <form data-th-object="${transaction}" th:action="@{/make-transfer}" method="post">
                             <div class="row">
                                 <div class="form-group blu-margin">
                                     <label for="sender" class="col-form-label">Sender</label>
@@ -79,7 +79,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <p class="my-5"><a href="#" class="btn btn-primary">Home Page</a></p>
+                        <p class="my-5"><a th:href="@{/index}" class="btn btn-primary">Home Page</a></p>
                     </div>
                 </div>
             </div>

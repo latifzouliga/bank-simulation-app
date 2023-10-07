@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Date;
+
 @Controller
 @RequestMapping
 public class TransactionController {
@@ -25,10 +27,10 @@ public class TransactionController {
     }
 
     @GetMapping("/make-transfer")
-    public String getMakeTransfer(Model model){
+    public String getMakeTransfer(Model model) {
         model.addAttribute("transaction", Transaction.builder().build());
-        model.addAttribute("accounts",accountService.listAllAccount() );
-        model.addAttribute("lastTransactions",transactionService.last10Transactions());
+        model.addAttribute("accounts", accountService.listAllAccount());
+        model.addAttribute("lastTransactions", transactionService.last10Transactions());
         return "/transaction/make-transfer";
     }
 
@@ -36,12 +38,13 @@ public class TransactionController {
     // capture the transaction object
     //
     @PostMapping("/make-transfer")
-    public String getMakeTransfer(@ModelAttribute Transaction transaction){
-        //makeTransfer(Account sender, Account receiver, BigDecimal amount, Date creationDate, String message)
-       Account sender = accountService.findAccountById(transaction.getSender());
-       Account receiver = accountService.findAccountById(transaction.getReceiver());
-        transactionService.makeTransfer(sender,receiver,transaction.getAmount(),transaction.getCreationDate(),transaction.getMessage());
-        return "/transaction/make-transfer";
+    public String getMakeTransfer(@ModelAttribute("transaction") Transaction transaction) {
+
+        Account sender = accountService.findAccountById(transaction.getSender());
+        Account receiver = accountService.findAccountById(transaction.getReceiver());
+        transactionService.makeTransfer(sender, receiver, transaction.getAmount(), new Date(), transaction.getMessage());
+        System.out.println(transaction);
+        return "redirect:/make-transfer";
     }
 
 
