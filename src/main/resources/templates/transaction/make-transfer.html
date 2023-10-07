@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="https://www.thymeleaf.org/">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -14,32 +14,41 @@
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <form action="#">
+                        <form data-th-object="${transaction}" action="#">
                             <div class="row">
                                 <div class="form-group blu-margin">
                                     <label for="sender" class="col-form-label">Sender</label>
-                                    <select class="form-control" id="sender">
+                                    <select  data-th-field="*{sender}" class="form-control" id="sender">
                                         <option value="0">Select Account</option>
-                                        <option></option>
+                                        <option
+                                                data-th-each="acount: ${accounts}"
+                                                data-th-value="${acount.id}"
+                                                data-th-text="${acount.balance+'-'+acount.useId+'-'+acount.accountType.value}"
+                                        >
+                                        </option>
                                     </select>
                                 </div>
         
                                 <div class="form-group blu-margin">
                                     <label for="receiver" class="col-form-label">Receiver</label>
-                                    <select class="form-control" id="receiver">
-                                        <option value="0">Select Account</option>
-                                        <option></option>
+                                    <select  data-th-field="*{receiver}" class="form-control" id="receiver">
+                                        <option  value="0">Select Account</option>
+                                        <option
+                                                data-th-each="acount: ${accounts}"
+                                                data-th-value="${acount.id}"
+                                                data-th-text="${acount.balance+'-'+acount.useId+'-'+acount.accountType.value}"
+                                        ></option>
                                     </select>
                                 </div>
         
                                 <div class="form-group blu-margin">
                                     <label for="amount" class="col-form-label">Amount</label>
-                                    <input type="text" class="form-control" id="amount" placeholder="Amount">
+                                    <input data-th-field="*{amount}" type="text" class="form-control" id="amount" placeholder="Amount">
                                 </div>
         
                                 <div class="form-group blu-margin">
                                     <label for="message" class="col-form-label">Message</label>
-                                    <input type="text" class="form-control" id="message" placeholder="Message">
+                                    <input data-th-field="*{message}" type="text" class="form-control" id="message" placeholder="Message">
                                 </div>
                             </div>
                             <div class="row">
@@ -61,12 +70,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr >
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr data-th-each="tran : ${lastTransactions}">
+                                    <td data-th-text="${tran.sender}"></td>
+                                    <td data-th-text="${tran.receiver}"></td>
+                                    <td data-th-text="${tran.amount}"></td>
+                                    <td data-th-text="${tran.creationDate}"></td>
+                                    <td data-th-text="${tran.message}"></td>
                                 </tr>
                             </tbody>
                         </table>

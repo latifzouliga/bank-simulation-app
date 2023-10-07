@@ -34,7 +34,7 @@ public class BankSimulationAppApplication {
 //        System.out.println("============== accounts ==============");
 //        accountService.listAllAccount().forEach(System.out::println);
 //
-//        transactionService.makeTransfer(sender,receiver,new BigDecimal(50),new Date(),"Transaction 1");
+        transactionService.makeTransfer(sender,receiver,new BigDecimal(50),new Date(),"Transaction 1");
 //
 //        System.out.println("============== transactions ==============");
 //        transactionService.findAllTransaction().forEach(System.out::println);
