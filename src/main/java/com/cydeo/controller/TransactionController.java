@@ -25,7 +25,7 @@ public class TransactionController {
     }
 
     @GetMapping("/make-transfer")
-    public String getMakeTransfer(Model model) {
+    private String getMakeTransfer(Model model) {
         model.addAttribute("transaction", Transaction.builder().build());
         model.addAttribute("accounts", accountService.listAllAccount());
         model.addAttribute("lastTransactions", transactionService.last10Transactions());
@@ -34,7 +34,7 @@ public class TransactionController {
 
 
     @PostMapping("/make-transfer")
-    public String getMakeTransfer(@ModelAttribute("transaction") Transaction transaction) {
+    private String getMakeTransfer(@ModelAttribute("transaction") Transaction transaction) {
 
         Account sender = accountService.findAccountById(transaction.getSender());
         Account receiver = accountService.findAccountById(transaction.getReceiver());
