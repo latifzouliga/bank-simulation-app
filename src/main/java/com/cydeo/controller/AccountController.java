@@ -21,11 +21,9 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
-    private final AccountRepository accountRepository;
 
-    public AccountController(AccountService accountService, AccountRepository accountRepository) {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
-        this.accountRepository = accountRepository;
     }
 
     @GetMapping("/index")
