@@ -29,33 +29,33 @@ public class AccountController {
     }
 
     @GetMapping("/index")
-    public String showAccounts(Model model) {
+    private String showAccounts(Model model) {
         model.addAttribute("accountList", accountService.listAllAccount());
         return "/account/index";
     }
 
     @GetMapping("/create-form")
-    public String createAccount(Model model) {
+    private String createAccount(Model model) {
         model.addAttribute("account", Account.builder().build());
         model.addAttribute("accountTypes", AccountType.values());
         return "/account/create-account";
     }
 
     @PostMapping("/create")
-    public String insertAccount(@ModelAttribute("account") Account account) {
+    private String insertAccount(@ModelAttribute("account") Account account) {
         accountService.createNewAccount(account.getBalance(), new Date(), account.getAccountType(), account.getUseId());
         return "redirect:/index";
     }
 
     @GetMapping("/delete/{uuid}")
-    public String deleteAccount(@PathVariable UUID uuid){
+    private String deleteAccount(@PathVariable UUID uuid){
         System.out.println(uuid);
         accountService.deleteAccount(uuid);
         return "redirect:/index";
     }
 
     @GetMapping("/activate/{uuid}")
-    public String activateAccount(@PathVariable UUID uuid){
+    private String activateAccount(@PathVariable UUID uuid){
         accountService.activate(uuid);
         return "redirect:/index";
     }
