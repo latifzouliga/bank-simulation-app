@@ -120,6 +120,13 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transaction> last10Transactions() {
         return transactionRepository.findLast10Transactions();
     }
+
+    @Override
+    public List<Transaction> findTransactionById(UUID uuid) {
+        return findAllTransaction().stream()
+                .filter(transaction -> transaction.getSender().equals(uuid) || transaction.getReceiver().equals(uuid))
+                .collect(Collectors.toList());
+    }
 }
 
 
