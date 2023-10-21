@@ -41,7 +41,10 @@ public class AccountController {
 
     @PostMapping("/create")
     private String insertAccount(@ModelAttribute("account") Account account) {
-        accountService.createNewAccount(account.getBalance(), new Date(), account.getAccountType(), account.getUseId());
+        accountService.createNewAccount(account.getBalance(),
+                                        new Date(),
+                                        account.getAccountType(),
+                                        account.getUseId());
         return "redirect:/index";
     }
 
