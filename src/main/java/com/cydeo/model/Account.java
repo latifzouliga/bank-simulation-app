@@ -5,7 +5,9 @@ import com.cydeo.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
@@ -15,9 +17,13 @@ import java.util.UUID;
 public class Account {
 
     private UUID id;
+    @NonNull
+    @Positive
     private BigDecimal balance;
+    @NonNull
     private AccountType accountType;
     private Date creationDate;
+    @NonNull
     private Long useId;
     private AccountStatus accountStatus;
 
