@@ -1,11 +1,9 @@
-package com.cydeo.model;
+package com.cydeo.dto;
 
 import com.cydeo.enums.AccountStatus;
 import com.cydeo.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -15,7 +13,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class Account {
+public class AccountDTO {
 
     private UUID id;
     @NotNull

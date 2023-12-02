@@ -1,8 +1,7 @@
-package com.cydeo.model;
+package com.cydeo.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -14,7 +13,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-public class Transaction {
+public class TransactionDTO {
 
     @NotNull
     private UUID sender;

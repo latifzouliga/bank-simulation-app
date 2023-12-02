@@ -1,9 +1,9 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.dto.AccountDTO;
 import com.cydeo.enums.AccountStatus;
 import com.cydeo.enums.AccountType;
 import com.cydeo.exception.RecordNotFoundException;
-import com.cydeo.model.Account;
 import com.cydeo.repository.AccountRepository;
 import com.cydeo.service.AccountService;
 import org.springframework.stereotype.Component;
@@ -23,9 +23,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
+    public AccountDTO createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
         // create Account object
-        Account account = Account.builder()
+        AccountDTO accountDTO = AccountDTO.builder()
                 .id(UUID.randomUUID())
                 .useId(userId)
                 .balance(balance)
@@ -35,31 +35,31 @@ public class AccountServiceImpl implements AccountService {
                 .build();
         // save into the database
         // return the created object
-        return accountRepository.save(account); // save and return
+        return accountRepository.save(accountDTO); // save and return
 
     }
 
     @Override
-    public List<Account> listAllAccount() {
+    public List<AccountDTO> listAllAccount() {
         return accountRepository.findAll();
     }
 
 
     @Override
     public void deleteAccount(UUID id) {
-        Account account = accountRepository.findById(id);
-        account.setAccountStatus(AccountStatus.DELETED);
+        AccountDTO accountDTO = accountRepository.findById(id);
+        accountDTO.setAccountStatus(AccountStatus.DELETED);
 
     }
 
     @Override
     public void activate(UUID id) {
-        Account account = accountRepository.findById(id);
-        account.setAccountStatus(AccountStatus.ACTIVE);
+        AccountDTO accountDTO = accountRepository.findById(id);
+        accountDTO.setAccountStatus(AccountStatus.ACTIVE);
     }
 
     @Override
-    public Account findAccountById(UUID id) {
+    public AccountDTO findAccountById(UUID id) {
         return accountRepository.findAll()
                 .stream()
                 .filter(account -> account.getId().equals(id))

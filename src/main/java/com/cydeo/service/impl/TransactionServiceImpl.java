@@ -1,12 +1,12 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.dto.TransactionDTO;
 import com.cydeo.enums.AccountType;
 import com.cydeo.exception.AccountOwnershipException;
 import com.cydeo.exception.BadRequestException;
 import com.cydeo.exception.BalanceNotSufficientException;
 import com.cydeo.exception.UnderConstructionException;
-import com.cydeo.model.Account;
-import com.cydeo.model.Transaction;
+import com.cydeo.dto.AccountDTO;
 import com.cydeo.repository.AccountRepository;
 import com.cydeo.repository.TransactionRepository;
 import com.cydeo.service.TransactionService;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction makeTransfer(Account sender, Account receiver, BigDecimal amount, Date creationDate, String message) {
+    public TransactionDTO makeTransfer(AccountDTO sender, AccountDTO receiver, BigDecimal amount, Date creationDate, String message) {
 
         if (!underConstruction) {
 
@@ -48,7 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             // make transfer
             // after all validation are completed, and money is
-            Transaction transaction = Transaction.builder()
+            TransactionDTO transactionDTO = TransactionDTO.builder()
                     .amount(amount)
                     .sender(sender.getId())
                     .receiver(receiver.getId())
@@ -56,14 +55,14 @@ public class TransactionServiceImpl implements TransactionService {
                     .message(message)
                     .build();
             // save and return transaction
-            return transactionRepository.save(transaction);
+            return transactionRepository.save(transactionDTO);
         }else {
             throw new UnderConstructionException("App is under construction, please come later");
         }
 
     }
 
-    private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
+    private void executeBalanceAndUpdateIfRequired(BigDecimal amount, AccountDTO sender, AccountDTO receiver) {
         if (checkSenderBalance(sender, amount)) {
             // update sender and receiver balance
             sender.setBalance(sender.getBalance().subtract(amount));
@@ -73,13 +72,13 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-    private boolean checkSenderBalance(Account sender, BigDecimal amount) {
+    private boolean checkSenderBalance(AccountDTO sender, BigDecimal amount) {
         //verify sender has enough balance to send
         return sender.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >= 0;
     }
 
 
-    private void checkAccountOwnership(Account sender, Account receiver) {
+    private void checkAccountOwnership(AccountDTO sender, AccountDTO receiver) {
         // write an if statement that checks if one of the accounts is saving
         // and user of sender or receiver is not the same, throw AccountOwnershipException
 
@@ -90,7 +89,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-    private void validateAccount(Account sender, Account receiver) {
+    private void validateAccount(AccountDTO sender, AccountDTO receiver) {
 
         //if any of account is null
         if (sender == null || receiver == null) {
@@ -112,19 +111,19 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findAllTransaction() {
+    public List<TransactionDTO> findAllTransaction() {
         return transactionRepository.findAll();
     }
 
     @Override
-    public List<Transaction> last10Transactions() {
+    public List<TransactionDTO> last10Transactions() {
         return transactionRepository.findLast10Transactions();
     }
 
     @Override
-    public List<Transaction> findTransactionById(UUID uuid) {
+    public List<TransactionDTO> findTransactionById(UUID uuid) {
         return findAllTransaction().stream()
-                .filter(transaction -> transaction.getSender().equals(uuid) || transaction.getReceiver().equals(uuid))
+                .filter(transactionDTO -> transactionDTO.getSender().equals(uuid) || transactionDTO.getReceiver().equals(uuid))
                 .collect(Collectors.toList());
     }
 }

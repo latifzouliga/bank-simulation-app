@@ -1,14 +1,12 @@
 package com.cydeo;
 
+import com.cydeo.dto.AccountDTO;
 import com.cydeo.enums.AccountType;
-import com.cydeo.model.Account;
 import com.cydeo.service.AccountService;
 import com.cydeo.service.TransactionService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -24,12 +22,12 @@ public class BankSimulationAppApplication {
         TransactionService transactionService = context.getBean(TransactionService.class);
 //
         //create 2 accounts: sender and receiver
-        Account sender = accountService.createNewAccount(BigDecimal.valueOf(7000), new Date(), AccountType.CHECKING, 1L);
-        Account sender2 = accountService.createNewAccount(BigDecimal.valueOf(5000), new Date(), AccountType.CHECKING, 2L);
-        Account sender3 = accountService.createNewAccount(BigDecimal.valueOf(5000), new Date(), AccountType.CHECKING, 3L);
-        Account receiver1 = accountService.createNewAccount(BigDecimal.valueOf(7400), new Date(), AccountType.CHECKING, 4L);
-        Account receiver2 = accountService.createNewAccount(BigDecimal.valueOf(6200), new Date(), AccountType.CHECKING, 5L);
-        Account receiver3 = accountService.createNewAccount(BigDecimal.valueOf(3000), new Date(), AccountType.CHECKING, 6L);
+        AccountDTO sender = accountService.createNewAccount(BigDecimal.valueOf(7000), new Date(), AccountType.CHECKING, 1L);
+        AccountDTO sender2 = accountService.createNewAccount(BigDecimal.valueOf(5000), new Date(), AccountType.CHECKING, 2L);
+        AccountDTO sender3 = accountService.createNewAccount(BigDecimal.valueOf(5000), new Date(), AccountType.CHECKING, 3L);
+        AccountDTO receiver1 = accountService.createNewAccount(BigDecimal.valueOf(7400), new Date(), AccountType.CHECKING, 4L);
+        AccountDTO receiver2 = accountService.createNewAccount(BigDecimal.valueOf(6200), new Date(), AccountType.CHECKING, 5L);
+        AccountDTO receiver3 = accountService.createNewAccount(BigDecimal.valueOf(3000), new Date(), AccountType.CHECKING, 6L);
 //        Account receiver2 = null;
 ////
 //        System.out.println("============== accounts ==============");
