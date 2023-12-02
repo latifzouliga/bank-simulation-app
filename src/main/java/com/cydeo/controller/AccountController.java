@@ -51,16 +51,16 @@ public class AccountController {
         return "redirect:/index";
     }
 
-    @GetMapping("/delete/{uuid}")
-    private String deleteAccount(@PathVariable Long uuid){
-        System.out.println(uuid);
-        accountService.deleteAccount(uuid);
+    @GetMapping("/delete/{accountId}")
+    private String deleteAccount(@PathVariable Long accountId){
+        System.out.println(accountId);
+        accountService.deleteAccount(accountId);
         return "redirect:/index";
     }
 
-    @GetMapping("/activate/{uuid}")
-    private String activateAccount(@PathVariable Long uuid){
-        accountService.activate(uuid);
+    @GetMapping("/activate/{accountId}")
+    private String activateAccount(@PathVariable Long accountId){
+        accountService.activate(accountId);
         return "redirect:/index";
     }
 
