@@ -6,8 +6,10 @@ import com.cydeo.service.AccountService;
 import com.cydeo.service.TransactionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.UUID;
 
@@ -34,8 +36,13 @@ public class TransactionController {
 
 
     @PostMapping("/make-transfer")
-    private String getMakeTransfer(@ModelAttribute("transaction") Transaction transaction) {
+    private String getMakeTransfer(@Valid @ModelAttribute("transaction") Transaction transaction, BindingResult bindingResult, Model model) {
 
+        if (bindingResult.hasErrors()){
+            model.addAttribute("accounts", accountService.listAllAccount());
+            model.addAttribute("lastTransactions", transactionService.last10Transactions());
+            return "/transaction/make-transfer";
+        }
         Account sender = accountService.findAccountById(transaction.getSender());
         Account receiver = accountService.findAccountById(transaction.getReceiver());
 
