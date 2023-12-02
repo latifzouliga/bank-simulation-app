@@ -43,8 +43,8 @@ public class TransactionController {
             model.addAttribute("lastTransactions", transactionService.last10Transactions());
             return "/transaction/make-transfer";
         }
-        AccountDTO sender = accountService.findAccountById(transactionDTO.getSender());
-        AccountDTO receiver = accountService.findAccountById(transactionDTO.getReceiver());
+        AccountDTO sender = accountService.findAccountById(transactionDTO.getSender().getId());
+        AccountDTO receiver = accountService.findAccountById(transactionDTO.getReceiver().getId());
 
         transactionService.makeTransfer(sender, receiver, transactionDTO.getAmount(),new Date(), transactionDTO.getMessage());
         System.out.println(transactionDTO);
