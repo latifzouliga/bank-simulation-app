@@ -28,7 +28,7 @@ public class TransactionController {
 
     @GetMapping("/make-transfer")
     private String getMakeTransfer(Model model) {
-        model.addAttribute("transaction", TransactionDTO.builder().build());
+        model.addAttribute("transaction", new TransactionDTO());
         model.addAttribute("accounts", accountService.listAllAccount());
         model.addAttribute("lastTransactions", transactionService.last10Transactions());
         return "/transaction/make-transfer";
