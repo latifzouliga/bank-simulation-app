@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 public class AccountRepository {
@@ -22,7 +21,7 @@ public class AccountRepository {
         return ACCOUNTLIST;
     }
 
-    public AccountDTO findById(UUID id) {
+    public AccountDTO findById(Long id) {
        return findAll().stream()
                 .filter(account -> account.getId().equals(id))
                 .findAny()

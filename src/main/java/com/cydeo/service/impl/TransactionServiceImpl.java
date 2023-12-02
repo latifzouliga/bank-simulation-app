@@ -47,13 +47,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             // make transfer
             // after all validation are completed, and money is
-            TransactionDTO transactionDTO = TransactionDTO.builder()
-                    .amount(amount)
-                    .sender(sender.getId())
-                    .receiver(receiver.getId())
-                    .creationDate(creationDate)
-                    .message(message)
-                    .build();
+            TransactionDTO transactionDTO = new TransactionDTO();
             // save and return transaction
             return transactionRepository.save(transactionDTO);
         }else {
@@ -106,7 +100,7 @@ public class TransactionServiceImpl implements TransactionService {
         findAccountById(receiver.getId());
     }
 
-    private void findAccountById(UUID id) {
+    private void findAccountById(Long id) {
         accountRepository.findById(id);
     }
 
