@@ -1,4 +1,4 @@
-package com.cydeo.controller.mapper;
+package com.cydeo.mapper;
 
 import com.cydeo.dto.AccountDTO;
 import com.cydeo.entity.Account;

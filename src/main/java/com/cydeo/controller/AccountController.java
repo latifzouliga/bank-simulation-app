@@ -44,10 +44,7 @@ public class AccountController {
             model.addAttribute("accountTypes", AccountType.values());
             return "/account/create-account";
         }
-        accountService.createNewAccount(accountDTO.getBalance(),
-                                        new Date(),
-                                        accountDTO.getAccountType(),
-                                        accountDTO.getUseId());
+        accountService.createNewAccount(accountDTO);
         return "redirect:/index";
     }
 

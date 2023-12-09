@@ -1,62 +1,74 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.AccountDTO;
+import com.cydeo.entity.Account;
 import com.cydeo.enums.AccountStatus;
 import com.cydeo.enums.AccountType;
 import com.cydeo.exception.RecordNotFoundException;
+import com.cydeo.mapper.AccountMapper;
 import com.cydeo.repository.AccountRepository;
 import com.cydeo.service.AccountService;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class AccountServiceImpl implements AccountService {
 
     AccountRepository accountRepository;
+    private final AccountMapper mapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper mapper) {
         this.accountRepository = accountRepository;
+        this.mapper = mapper;
     }
 
     @Override
-    public AccountDTO createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
+    public void createNewAccount(AccountDTO accountDTO) {
+        accountDTO.setCreationDate(new Date());
+        accountDTO.setAccountStatus(AccountStatus.ACTIVE);
         // create Account object
-        AccountDTO accountDTO = new AccountDTO();
         // save into the database
         // return the created object
-        return accountRepository.save(accountDTO); // save and return
+
+       accountRepository.save(mapper.convertToEntity(accountDTO)); // save and return
+
 
     }
 
     @Override
     public List<AccountDTO> listAllAccount() {
-        return accountRepository.findAll();
+        return accountRepository.findAll()
+                .stream()
+                .map(mapper::convertToDTO)
+                .collect(Collectors.toList());
     }
 
 
     @Override
     public void deleteAccount(Long id) {
-        AccountDTO accountDTO = accountRepository.findById(id);
-        accountDTO.setAccountStatus(AccountStatus.DELETED);
+        Account account = accountRepository.findById(id).orElseThrow();
+        account.setAccountStatus(AccountStatus.DELETED);
+        accountRepository.save(account);
 
     }
 
     @Override
     public void activate(Long id) {
-        AccountDTO accountDTO = accountRepository.findById(id);
-        accountDTO.setAccountStatus(AccountStatus.ACTIVE);
+        Account account = accountRepository.findById(id).orElseThrow();
+        account.setAccountStatus(AccountStatus.ACTIVE);
+        accountRepository.save(account);
     }
 
     @Override
     public AccountDTO findAccountById(Long id) {
-        return accountRepository.findAll()
-                .stream()
-                .filter(account -> account.getId().equals(id))
-                .findAny()
-                .orElseThrow(() -> new RecordNotFoundException("No account found"));
+        return mapper.convertToDTO(
+                accountRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("No account found"))
+        );
     }
 }
