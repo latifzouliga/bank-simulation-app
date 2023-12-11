@@ -33,13 +33,13 @@ public class AccountController {
 
     @GetMapping("/create-form")
     private String createAccount(Model model) {
-        model.addAttribute("account", new AccountDTO());
+        model.addAttribute("accountDTO", new AccountDTO());
         model.addAttribute("accountTypes", AccountType.values());
         return "/account/create-account";
     }
 
     @PostMapping("/create")
-    private String insertAccount(@Valid @ModelAttribute("account") AccountDTO accountDTO, BindingResult bindingResult, Model model) {
+    private String insertAccount(@Valid @ModelAttribute("accountDTO") AccountDTO accountDTO, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()){
             model.addAttribute("accountTypes", AccountType.values());
             return "/account/create-account";

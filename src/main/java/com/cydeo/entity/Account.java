@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -32,6 +33,7 @@ public class Account extends BaseEntity{
     private AccountStatus accountStatus;
 
     // this can be User user;
+    //@Column(unique = true)
     private Long userId;
 
 }

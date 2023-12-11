@@ -37,7 +37,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="accountDTO : ${accountList}">
-                        <td th:text="${accountDTO.useId}"></td>
+                        <td th:text="${accountDTO.userId}"></td>
                         <td th:text="${accountDTO.accountStatus.value}">Active</td>
                         <td th:text="${accountDTO.balance}"></td>
                         <td th:text="${accountDTO.accountType.value}"></td>

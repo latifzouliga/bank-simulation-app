@@ -23,7 +23,8 @@ public class AccountDTO {
     private AccountType accountType;
     private Date creationDate;
     @NotNull
-    private Long useId;
+
+    private Long userId;
     private AccountStatus accountStatus;
 
 }

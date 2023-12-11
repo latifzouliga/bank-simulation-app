@@ -15,6 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class TransactionDTO {
 
+
     @NotNull
     private AccountDTO sender;
     @NotNull
@@ -28,5 +29,6 @@ public class TransactionDTO {
     @Pattern(regexp = "^[a-zA-Z0-9]*$")
     private  String message;
     private Date creationDate;
+
 
 }

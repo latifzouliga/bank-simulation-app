@@ -59,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void activate(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow();
+        Account account = accountRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("No account found"));
         account.setAccountStatus(AccountStatus.ACTIVE);
         accountRepository.save(account);
     }
@@ -70,5 +70,19 @@ public class AccountServiceImpl implements AccountService {
                 accountRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("No account found"))
         );
+    }
+
+    @Override
+    public List<AccountDTO> listAllActiveAccounts() {
+        return accountRepository.findByAccountStatus(AccountStatus.ACTIVE)
+                .stream()
+                .map(mapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateAccount(AccountDTO accountDTO) {
+
+      accountRepository.save(mapper.convertToEntity(accountDTO));
     }
 }
