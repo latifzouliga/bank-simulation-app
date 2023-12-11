@@ -1,69 +1,88 @@
 package com.cydeo.service.impl;
 
+import com.cydeo.dto.AccountDTO;
+import com.cydeo.entity.Account;
 import com.cydeo.enums.AccountStatus;
 import com.cydeo.enums.AccountType;
 import com.cydeo.exception.RecordNotFoundException;
-import com.cydeo.model.Account;
+import com.cydeo.mapper.AccountMapper;
 import com.cydeo.repository.AccountRepository;
 import com.cydeo.service.AccountService;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class AccountServiceImpl implements AccountService {
 
     AccountRepository accountRepository;
+    private final AccountMapper mapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper mapper) {
         this.accountRepository = accountRepository;
+        this.mapper = mapper;
     }
 
     @Override
-    public Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
+    public void createNewAccount(AccountDTO accountDTO) {
+        accountDTO.setCreationDate(new Date());
+        accountDTO.setAccountStatus(AccountStatus.ACTIVE);
         // create Account object
-        Account account = Account.builder()
-                .id(UUID.randomUUID())
-                .useId(userId)
-                .balance(balance)
-                .accountType(accountType)
-                .creationDate(creationDate)
-                .accountStatus(AccountStatus.ACTIVE)
-                .build();
         // save into the database
         // return the created object
-        return accountRepository.save(account); // save and return
+
+       accountRepository.save(mapper.convertToEntity(accountDTO)); // save and return
+
 
     }
 
     @Override
-    public List<Account> listAllAccount() {
-        return accountRepository.findAll();
-    }
-
-
-    @Override
-    public void deleteAccount(UUID id) {
-        Account account = accountRepository.findById(id);
-        account.setAccountStatus(AccountStatus.DELETED);
-
-    }
-
-    @Override
-    public void activate(UUID id) {
-        Account account = accountRepository.findById(id);
-        account.setAccountStatus(AccountStatus.ACTIVE);
-    }
-
-    @Override
-    public Account findAccountById(UUID id) {
+    public List<AccountDTO> listAllAccount() {
         return accountRepository.findAll()
                 .stream()
-                .filter(account -> account.getId().equals(id))
-                .findAny()
-                .orElseThrow(() -> new RecordNotFoundException("No account found"));
+                .map(mapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public void deleteAccount(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow();
+        account.setAccountStatus(AccountStatus.DELETED);
+        accountRepository.save(account);
+
+    }
+
+    @Override
+    public void activate(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("No account found"));
+        account.setAccountStatus(AccountStatus.ACTIVE);
+        accountRepository.save(account);
+    }
+
+    @Override
+    public AccountDTO findAccountById(Long id) {
+        return mapper.convertToDTO(
+                accountRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("No account found"))
+        );
+    }
+
+    @Override
+    public List<AccountDTO> listAllActiveAccounts() {
+        return accountRepository.findByAccountStatus(AccountStatus.ACTIVE)
+                .stream()
+                .map(mapper::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateAccount(AccountDTO accountDTO) {
+
+      accountRepository.save(mapper.convertToEntity(accountDTO));
     }
 }

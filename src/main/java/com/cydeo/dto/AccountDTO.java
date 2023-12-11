@@ -1,23 +1,21 @@
-package com.cydeo.model;
+package com.cydeo.dto;
 
 import com.cydeo.enums.AccountStatus;
 import com.cydeo.enums.AccountType;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
-@Data
-@Builder
-public class Account {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class AccountDTO {
 
-    private UUID id;
+    private Long id;
     @NotNull
     @Positive
     private BigDecimal balance;
@@ -25,7 +23,8 @@ public class Account {
     private AccountType accountType;
     private Date creationDate;
     @NotNull
-    private Long useId;
+
+    private Long userId;
     private AccountStatus accountStatus;
 
 }

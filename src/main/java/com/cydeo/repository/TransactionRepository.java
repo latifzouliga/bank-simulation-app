@@ -1,30 +1,18 @@
 package com.cydeo.repository;
 
-import com.cydeo.model.Transaction;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Comparator;
+import com.cydeo.entity.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Component
-public class TransactionRepository {
-    public List<Transaction> transactionList = new ArrayList<>();
 
-    public Transaction save(Transaction transaction){
-        transactionList.add(transaction);
-        return transaction;
-    }
+@Repository
+public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 
-    public List<Transaction> findAll() {
-        return transactionList;
-    }
+    @Query(value = "SELECT * FROM transations ORDER BY creation_date DESC LIMIT 10",nativeQuery = true)
+    List<Transaction> findLast10Transactions();
 
-    public List<Transaction> findLast10Transactions() {
-        return findAll()
-                .stream().sorted(Comparator.comparing(Transaction::getCreationDate).reversed())
-                .limit(10)
-                .collect(Collectors.toList());
-    }
+    @Query("SELECT t FROM Transaction t where t.sender.id = ?1 OR t.receiver.id = ?1")
+    List<Transaction> findTransactionListByAccount(Long id);
 }

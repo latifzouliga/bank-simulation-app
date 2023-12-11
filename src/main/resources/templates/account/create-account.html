@@ -16,15 +16,15 @@
             <h2 class="mb-5">New User</h2>
             <div class="row">
                 <div class="col-md-6">
-                    <form th:object="${account}" th:action="@{/create}" method="post">
+                    <form th:object="${accountDTO}" th:action="@{/create}" method="post">
                         <div class="row">
                             <div class="form-group blu-margin">
                                 <label for="userId" class="col-form-label">UserId</label>
-                                <input th:field="*{useId}" type="text" class="form-control" id="userId" placeholder="user id">
+                                <input th:field="*{userId}" type="text" class="form-control" id="userId" placeholder="user id">
 
-                                <div th:if="${#fields.hasErrors('useId')}">
+                                <div th:if="${#fields.hasErrors('userId')}">
                                     <ol class="alert alert-danger">
-                                        <li  th:each="error : ${#fields.errors('useId')}" th:text="${error}"></li>
+                                        <li  th:each="error : ${#fields.errors('userId')}" th:text="${error}"></li>
                                     </ol>
                                 </div>
 

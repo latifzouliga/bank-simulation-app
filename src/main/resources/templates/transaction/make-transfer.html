@@ -14,16 +14,16 @@
             <div class="row">
                 <div class="col-md-6">
                     <div>
-                        <form data-th-object="${transaction}" th:action="@{/make-transfer}" method="post">
+                        <form data-th-object="${transactionDTO}" th:action="@{/make-transfer}" method="post">
                             <div class="row">
                                 <div class="form-group blu-margin">
                                     <label for="sender" class="col-form-label">Sender</label>
                                     <select  data-th-field="*{sender}" class="form-control" id="sender">
-                                        <option th:value="''" th:text="select"></option>
+<!--                                        <option th:value="''" th:text="select"></option>-->
                                         <option
                                                 data-th-each="acount: ${accounts}"
                                                 data-th-value="${acount.id}"
-                                                data-th-text="${acount.balance+'-'+acount.useId+'-'+acount.accountType.value}"
+                                                data-th-text="${acount.balance+'-'+acount.userId+'-'+acount.accountType.value}"
                                         >
                                         </option>
                                     </select>
@@ -41,7 +41,7 @@
                                         <option
                                                 data-th-each="acount: ${accounts}"
                                                 data-th-value="${acount.id}"
-                                                data-th-text="${acount.balance+'-'+acount.useId+'-'+acount.accountType.value}"
+                                                data-th-text="${acount.balance+'-'+acount.userId+'-'+acount.accountType.value}"
                                         ></option>
 
                                     </select>
