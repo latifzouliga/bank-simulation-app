@@ -1,6 +1,7 @@
 package com.cydeo.service.impl;
 
 import com.cydeo.dto.TransactionDTO;
+import com.cydeo.entity.Transaction;
 import com.cydeo.enums.AccountType;
 import com.cydeo.exception.AccountOwnershipException;
 import com.cydeo.exception.BadRequestException;
@@ -66,11 +67,11 @@ public class TransactionServiceImpl implements TransactionService {
             sender.setBalance(sender.getBalance().subtract(amount));
             receiver.setBalance(receiver.getBalance().add(amount));
             // find sender by id
-            AccountDTO senderAcc = accountService.findAccountById(sender.getId());
+            AccountDTO senderAcc = accountService.retrieveById(sender.getId());
             senderAcc.setBalance(sender.getBalance());
             accountService.updateAccount(senderAcc);
 
-            AccountDTO receiverAcc = accountService.findAccountById(receiver.getId());
+            AccountDTO receiverAcc = accountService.retrieveById(receiver.getId());
             receiverAcc.setBalance(receiver.getBalance());
             accountService.updateAccount(receiverAcc);
         } else {
@@ -113,7 +114,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private void findAccountById(Long id) {
-        accountService.findAccountById(id);
+        accountService.retrieveById(id);
     }
 
     @Override
@@ -133,11 +134,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDTO> findTransactionById(Long id) {
-        return transactionRepository.findTransactionListByAccount(id)
-                .stream()
-                .map(mapper::convertToDTO)
-                .collect(Collectors.toList());
+    public List<TransactionDTO> findTransactionListById(Long id) {
+        //get the list of transactions if account id is involved as a sender or receiver
+        List<Transaction> transactionList = transactionRepository.findTransactionListByAccountId(id);
+        //convert list of entity to dto and return it.
+        return transactionList.stream().map(mapper::convertToDTO).collect(Collectors.toList());
     }
 }
 

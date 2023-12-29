@@ -17,12 +17,11 @@ import java.util.Date;
 public class BankSimulationAppApplication {
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(BankSimulationAppApplication.class, args);
+        ApplicationContext container = SpringApplication.run(BankSimulationAppApplication.class, args);
 
-//         get account and transaction and service beans
-        AccountService accountService = context.getBean(AccountService.class);
-        TransactionService transactionService = context.getBean(TransactionService.class);
-//
+        //get account and transaction service beans
+        AccountService accountService = container.getBean(AccountService.class);
+        TransactionService transactionService = container.getBean(TransactionService.class);
 //        //create 2 accounts: sender and receiver
 //        AccountDTO sender = accountService.createNewAccount(BigDecimal.valueOf(7000), new Date(), AccountType.CHECKING, 1L);
 //        AccountDTO sender2 = accountService.createNewAccount(BigDecimal.valueOf(5000), new Date(), AccountType.CHECKING, 2L);

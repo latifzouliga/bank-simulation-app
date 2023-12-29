@@ -1,30 +1,26 @@
 package com.cydeo.converter;
 
 import com.cydeo.dto.AccountDTO;
-import com.cydeo.entity.Account;
-import com.cydeo.mapper.AccountMapper;
-import com.cydeo.repository.AccountRepository;
+import com.cydeo.service.AccountService;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AccountConverter implements Converter<String, AccountDTO> {
 
 
-    private final AccountRepository accountRepository;
-    private final AccountMapper mapper;
+    private final AccountService accountService;
 
-    public AccountConverter(AccountRepository accountRepository, AccountMapper mapper) {
-        this.accountRepository = accountRepository;
-        this.mapper = mapper;
+    public AccountConverter(AccountService accountService) {
+        this.accountService = accountService;
     }
-
 
     @Override
     public AccountDTO convert(String source) {
-        return mapper.convertToDTO(
-                accountRepository.findByUserId(Long.valueOf(source)).orElseThrow()
-        );
+        if(source==null||source.equals("")){
+            return null;
+        }
+        return accountService.retrieveById(Long.parseLong(source));
     }
+
 }

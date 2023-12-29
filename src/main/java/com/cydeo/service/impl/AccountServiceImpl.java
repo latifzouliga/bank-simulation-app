@@ -19,70 +19,67 @@ import java.util.stream.Collectors;
 @Component
 public class AccountServiceImpl implements AccountService {
 
-    AccountRepository accountRepository;
-    private final AccountMapper mapper;
+    private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper mapper) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
-        this.mapper = mapper;
+        this.accountMapper = accountMapper;
     }
 
     @Override
-    public void createNewAccount(AccountDTO accountDTO) {
+    public void  createNewAccount(AccountDTO accountDTO) {
+
         accountDTO.setCreationDate(new Date());
         accountDTO.setAccountStatus(AccountStatus.ACTIVE);
-        // create Account object
-        // save into the database
-        // return the created object
-
-       accountRepository.save(mapper.convertToEntity(accountDTO)); // save and return
-
-
+        //save into the database(repository)
+        accountRepository.save(accountMapper.convertToEntity(accountDTO));
     }
 
     @Override
     public List<AccountDTO> listAllAccount() {
-        return accountRepository.findAll()
-                .stream()
-                .map(mapper::convertToDTO)
-                .collect(Collectors.toList());
+        //we are getting list of account but we need to return list of AccountDTO
+        List<Account> accountList = accountRepository.findAll();
+        //we are converting entity to dto list and return it
+        return accountList.stream().map(accountMapper::convertToDTO).collect(Collectors.toList());
     }
-
 
     @Override
     public void deleteAccount(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow();
+        //find the account object based on id
+        Account account = accountRepository.findById(id).get();
+        //set status to deleted
         account.setAccountStatus(AccountStatus.DELETED);
+        //save the updated account object
         accountRepository.save(account);
-
     }
 
     @Override
-    public void activate(Long id) {
-        Account account = accountRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("No account found"));
+    public void activateAccount(Long id) {
+        //find the account belongs the id
+        Account account = accountRepository.findById(id).get();
+        //set status to active
         account.setAccountStatus(AccountStatus.ACTIVE);
+        //save the updated account object
         accountRepository.save(account);
     }
 
     @Override
-    public AccountDTO findAccountById(Long id) {
-        return mapper.convertToDTO(
-                accountRepository.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException("No account found"))
-        );
+    public AccountDTO retrieveById(Long id) {
+        //find the account entity based on id, then convert it dto and return it
+        return accountMapper.convertToDTO(accountRepository.findById(id).get());
     }
 
     @Override
-    public List<AccountDTO> listAllActiveAccounts() {
-        return accountRepository.findByAccountStatus(AccountStatus.ACTIVE)
-                .stream()
-                .map(mapper::convertToDTO)
-                .collect(Collectors.toList());
+    public List<AccountDTO> listAllActiveAccount() {
+        //we need list of active account from repository
+        List<Account> accountList = accountRepository.findAllByAccountStatus(AccountStatus.ACTIVE);
+        //convert active accounts to accountDto and return it
+        return accountList.stream().map(accountMapper::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
     public void updateAccount(AccountDTO accountDTO) {
-
-      accountRepository.save(mapper.convertToEntity(accountDTO));
+        accountRepository.save(accountMapper.convertToEntity(accountDTO));
     }
 }
