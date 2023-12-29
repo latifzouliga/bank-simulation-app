@@ -7,15 +7,16 @@ import java.util.List;
 public interface AccountService {
 
     void createNewAccount(AccountDTO accountDTO);
+
     List<AccountDTO> listAllAccount();
 
     void deleteAccount(Long id);
 
-    void activate(Long id);
+    void activateAccount(Long id);
 
-    AccountDTO findAccountById(Long id);
+    AccountDTO retrieveById(Long id);
 
-    List<AccountDTO> listAllActiveAccounts();
+    List<AccountDTO> listAllActiveAccount();
 
     void updateAccount(AccountDTO accountDTO);
 }

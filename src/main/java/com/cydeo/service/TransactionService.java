@@ -15,5 +15,5 @@ public interface TransactionService {
 
     List<TransactionDTO> last10Transactions();
 
-    List<TransactionDTO> findTransactionById(Long transactionId);
+    List<TransactionDTO> findTransactionListById(Long id);
 }
